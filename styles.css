@@ -1,0 +1,880 @@
+/* =============================================================
+   ChatGPT Bookmarks — Styles
+   Phase 1: Design Tokens, FAB, Badge, Toast, Highlight, Animations
+   ============================================================= */
+
+/* =============================================================
+   1. DESIGN TOKENS (CSS Custom Properties)
+   ============================================================= */
+:root {
+  /* Colors — Dark theme matching ChatGPT */
+  --bm-bg-primary: #212121;
+  --bm-bg-secondary: #2f2f2f;
+  --bm-bg-tertiary: #353535;
+  --bm-bg-hover: #383838;
+  --bm-bg-active: #424242;
+  --bm-text-primary: #ececec;
+  --bm-text-secondary: #b4b4b4;
+  --bm-text-muted: #8e8e8e;
+  --bm-accent: #10a37f;
+  --bm-accent-hover: #0d8c6c;
+  --bm-accent-active: #0a7a5e;
+  --bm-danger: #ef4444;
+  --bm-danger-hover: #dc2626;
+  --bm-warning: #f59e0b;
+  --bm-border: #444444;
+  --bm-border-light: #555555;
+  --bm-overlay: rgba(0, 0, 0, 0.6);
+  --bm-highlight: rgba(255, 245, 157, 0.35);
+
+  /* Spacing */
+  --bm-space-xs: 4px;
+  --bm-space-sm: 8px;
+  --bm-space-md: 12px;
+  --bm-space-lg: 16px;
+  --bm-space-xl: 24px;
+  --bm-space-2xl: 32px;
+
+  /* Typography */
+  --bm-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --bm-font-xs: 11px;
+  --bm-font-sm: 12px;
+  --bm-font-md: 14px;
+  --bm-font-lg: 16px;
+  --bm-font-xl: 18px;
+
+  /* Borders & Shadows */
+  --bm-radius-xs: 4px;
+  --bm-radius-sm: 6px;
+  --bm-radius-md: 10px;
+  --bm-radius-lg: 14px;
+  --bm-radius-xl: 18px;
+  --bm-radius-full: 50%;
+  --bm-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --bm-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --bm-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --bm-shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.5);
+
+  /* Animation */
+  --bm-transition-fast: 0.15s ease;
+  --bm-transition: 0.2s ease;
+  --bm-transition-slow: 0.3s ease;
+  --bm-transition-sidebar: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* =============================================================
+   2. FLOATING ACTION BUTTON (#chatgpt-bookmark-icon)
+   ============================================================= */
+#chatgpt-bookmark-icon {
+  position: fixed !important;
+  right: 20px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 48px !important;
+  height: 48px !important;
+  background: var(--bm-accent) !important;
+  border: none !important;
+  border-radius: var(--bm-radius-full) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: var(--bm-shadow) !important;
+  z-index: 999998 !important;
+  color: white !important;
+  transition: transform var(--bm-transition),
+              box-shadow var(--bm-transition),
+              background-color var(--bm-transition) !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+#chatgpt-bookmark-icon:hover {
+  background: var(--bm-accent-hover) !important;
+  box-shadow: var(--bm-shadow-lg) !important;
+  transform: translateY(-50%) scale(1.08) !important;
+}
+
+#chatgpt-bookmark-icon:active {
+  background: var(--bm-accent-active) !important;
+  transform: translateY(-50%) scale(0.95) !important;
+  box-shadow: var(--bm-shadow-sm) !important;
+}
+
+#chatgpt-bookmark-icon svg {
+  width: 22px !important;
+  height: 22px !important;
+  pointer-events: none !important;
+}
+
+
+/* =============================================================
+   3. BADGE (.bookmark-badge)
+   ============================================================= */
+.bookmark-badge {
+  position: absolute !important;
+  top: -4px !important;
+  right: -4px !important;
+  min-width: 20px !important;
+  height: 20px !important;
+  padding: 0 5px !important;
+  background: var(--bm-danger) !important;
+  color: white !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-xs) !important;
+  font-weight: 700 !important;
+  line-height: 20px !important;
+  text-align: center !important;
+  border-radius: var(--bm-radius-full) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+  pointer-events: none !important;
+  animation: badgePop var(--bm-transition-slow) cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  z-index: 1 !important;
+}
+
+
+/* =============================================================
+   4. BOOKMARK POPUP BUTTON (#chatgpt-bookmark-button)
+   ============================================================= */
+#chatgpt-bookmark-button {
+  position: fixed !important;
+  padding: 6px 14px !important;
+  background: var(--bm-bg-secondary) !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  font-weight: 500 !important;
+  border: 1px solid var(--bm-border) !important;
+  border-radius: var(--bm-radius-sm) !important;
+  cursor: pointer !important;
+  box-shadow: var(--bm-shadow) !important;
+  z-index: 999998 !important;
+  white-space: nowrap !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  animation: scaleIn 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  transition: background-color var(--bm-transition-fast),
+              border-color var(--bm-transition-fast) !important;
+}
+
+#chatgpt-bookmark-button:hover {
+  background: var(--bm-bg-hover) !important;
+  border-color: var(--bm-accent) !important;
+}
+
+#chatgpt-bookmark-button:active {
+  background: var(--bm-bg-active) !important;
+}
+
+
+/* =============================================================
+   5. TOAST NOTIFICATION (.chatgpt-bookmark-toast)
+   ============================================================= */
+.chatgpt-bookmark-toast {
+  position: fixed !important;
+  bottom: 24px;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(20px) !important;
+  padding: 10px 24px !important;
+  background: var(--bm-bg-secondary) !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  font-weight: 500 !important;
+  border: 1px solid var(--bm-border) !important;
+  border-radius: var(--bm-radius-md) !important;
+  box-shadow: var(--bm-shadow-lg) !important;
+  z-index: 99999999 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity var(--bm-transition-slow),
+              transform var(--bm-transition-slow),
+              bottom var(--bm-transition-fast) !important;
+  white-space: nowrap !important;
+  max-width: 90vw !important;
+}
+
+.chatgpt-bookmark-toast.show {
+  opacity: 1 !important;
+  transform: translateX(-50%) translateY(0) !important;
+}
+
+
+/* =============================================================
+   6. HIGHLIGHT OVERLAY (.chatgpt-bookmark-highlight)
+   ============================================================= */
+.chatgpt-bookmark-highlight {
+  position: fixed !important;
+  background: rgba(255, 235, 59, 0.45);
+  border: 2px solid rgba(255, 200, 0, 0.8) !important;
+  border-radius: 3px !important;
+  z-index: 999997 !important;
+  pointer-events: none !important;
+  cursor: default !important;
+  box-shadow: 0 0 12px rgba(255, 235, 59, 0.5), 0 0 4px rgba(255, 200, 0, 0.3);
+  animation: highlightGlow 1.5s ease-in-out infinite alternate !important;
+}
+
+/* In-DOM text highlight mark */
+.chatgpt-bookmark-mark {
+  background: rgba(255, 235, 59, 0.5);
+  color: inherit !important;
+  border-radius: 2px !important;
+  padding: 2px 0 !important;
+  box-decoration-break: clone !important;
+  -webkit-box-decoration-break: clone !important;
+}
+
+.chatgpt-bookmark-highlight.pulse {
+  animation: highlightPulse 2.5s ease-out forwards !important;
+}
+
+
+/* =============================================================
+   7. MODAL OVERLAY (#chatgpt-bookmark-modal)
+   ============================================================= */
+#chatgpt-bookmark-modal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: var(--bm-overlay) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 9999999 !important;
+  animation: fadeIn var(--bm-transition) ease !important;
+}
+
+.bookmark-modal-content {
+  background: var(--bm-bg-primary) !important;
+  border: 1px solid var(--bm-border) !important;
+  border-radius: var(--bm-radius-lg) !important;
+  padding: var(--bm-space-xl) !important;
+  width: 420px !important;
+  max-width: 90vw !important;
+  box-shadow: var(--bm-shadow-xl) !important;
+  animation: scaleIn var(--bm-transition) cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.bookmark-modal-content h3 {
+  margin: 0 0 var(--bm-space-lg) 0 !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-xl) !important;
+  font-weight: 600 !important;
+}
+
+#bookmark-name-input {
+  width: 100% !important;
+  padding: 10px 14px !important;
+  background: var(--bm-bg-secondary) !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  border: 1px solid var(--bm-border) !important;
+  border-radius: var(--bm-radius-sm) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  transition: border-color var(--bm-transition) !important;
+}
+
+#bookmark-name-input:focus {
+  border-color: var(--bm-accent) !important;
+  box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.15) !important;
+}
+
+#bookmark-name-input::placeholder {
+  color: var(--bm-text-muted) !important;
+}
+
+.bookmark-modal-preview {
+  margin: var(--bm-space-lg) 0 !important;
+  padding: var(--bm-space-md) !important;
+  background: var(--bm-bg-secondary) !important;
+  border: 1px solid var(--bm-border) !important;
+  border-radius: var(--bm-radius-sm) !important;
+  max-height: 120px !important;
+  overflow-y: auto !important;
+}
+
+.bookmark-modal-preview strong {
+  display: block !important;
+  color: var(--bm-text-secondary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-sm) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin-bottom: var(--bm-space-xs) !important;
+}
+
+.bookmark-modal-preview p {
+  margin: 0 !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  line-height: 1.5 !important;
+  word-break: break-word !important;
+}
+
+.bookmark-modal-buttons {
+  display: flex !important;
+  gap: var(--bm-space-sm) !important;
+  justify-content: flex-end !important;
+  margin-top: var(--bm-space-lg) !important;
+}
+
+#bookmark-save-btn,
+#bookmark-cancel-btn {
+  padding: 8px 20px !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  font-weight: 500 !important;
+  border-radius: var(--bm-radius-sm) !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+  transition: background-color var(--bm-transition-fast),
+              box-shadow var(--bm-transition-fast),
+              opacity var(--bm-transition-fast) !important;
+}
+
+#bookmark-save-btn {
+  background: var(--bm-accent) !important;
+  color: white !important;
+}
+
+#bookmark-save-btn:hover:not(:disabled):not(.disabled) {
+  background: var(--bm-accent-hover) !important;
+  box-shadow: 0 2px 8px rgba(16, 163, 127, 0.3) !important;
+}
+
+#bookmark-save-btn:active {
+  background: var(--bm-accent-active) !important;
+}
+
+#bookmark-save-btn:disabled,
+#bookmark-save-btn.disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+
+#bookmark-cancel-btn {
+  background: var(--bm-bg-secondary) !important;
+  color: var(--bm-text-secondary) !important;
+  border-color: var(--bm-border) !important;
+}
+
+#bookmark-cancel-btn:hover {
+  background: var(--bm-bg-hover) !important;
+  color: var(--bm-text-primary) !important;
+}
+
+
+/* =============================================================
+   8. SIDEBAR (#chatgpt-bookmark-sidebar)
+   ============================================================= */
+#chatgpt-bookmark-sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 360px !important;
+  max-width: 90vw !important;
+  height: 100vh !important;
+  background: var(--bm-bg-primary) !important;
+  border-left: 1px solid var(--bm-border) !important;
+  box-shadow: var(--bm-shadow-xl) !important;
+  z-index: 9999990 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transform: translateX(100%) !important;
+  transition: transform var(--bm-transition-sidebar) !important;
+  font-family: var(--bm-font) !important;
+}
+
+#chatgpt-bookmark-sidebar.open {
+  transform: translateX(0) !important;
+}
+
+/* --- Sidebar Header --- */
+.sidebar-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: var(--bm-space-lg) var(--bm-space-xl) !important;
+  border-bottom: 1px solid var(--bm-border) !important;
+  flex-shrink: 0 !important;
+}
+
+.sidebar-header h2 {
+  margin: 0 !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-lg) !important;
+  font-weight: 600 !important;
+}
+
+#sidebar-close-btn {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--bm-text-secondary) !important;
+  font-size: var(--bm-font-lg) !important;
+  cursor: pointer !important;
+  border-radius: var(--bm-radius-sm) !important;
+  transition: background-color var(--bm-transition-fast),
+              color var(--bm-transition-fast) !important;
+}
+
+#sidebar-close-btn:hover {
+  background: var(--bm-bg-hover) !important;
+  color: var(--bm-text-primary) !important;
+}
+
+/* --- Sidebar Search --- */
+.sidebar-search {
+  padding: var(--bm-space-md) var(--bm-space-xl) !important;
+  border-bottom: 1px solid var(--bm-border) !important;
+  flex-shrink: 0 !important;
+}
+
+.sidebar-search-wrapper {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.sidebar-search-wrapper svg {
+  position: absolute !important;
+  left: 10px !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: var(--bm-text-muted) !important;
+  pointer-events: none !important;
+}
+
+#sidebar-search-input {
+  width: 100% !important;
+  padding: 8px 30px 8px 34px !important;
+  background: var(--bm-bg-secondary) !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-sm) !important;
+  border: 1px solid var(--bm-border) !important;
+  border-radius: var(--bm-radius-sm) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  transition: border-color var(--bm-transition) !important;
+}
+
+#sidebar-search-input:focus {
+  border-color: var(--bm-accent) !important;
+}
+
+#sidebar-search-input::placeholder {
+  color: var(--bm-text-muted) !important;
+}
+
+.sidebar-search-clear {
+  position: absolute !important;
+  right: 6px !important;
+  width: 22px !important;
+  height: 22px !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--bm-text-muted) !important;
+  font-size: var(--bm-font-sm) !important;
+  cursor: pointer !important;
+  border-radius: var(--bm-radius-full) !important;
+  transition: color var(--bm-transition-fast) !important;
+}
+
+.sidebar-search-clear:hover {
+  color: var(--bm-text-primary) !important;
+}
+
+.sidebar-search-clear.visible {
+  display: flex !important;
+}
+
+/* --- Sidebar Actions (Export/Import) --- */
+.sidebar-actions {
+  display: flex !important;
+  gap: var(--bm-space-sm) !important;
+  padding: var(--bm-space-sm) var(--bm-space-xl) !important;
+  border-bottom: 1px solid var(--bm-border) !important;
+  flex-shrink: 0 !important;
+}
+
+.sidebar-actions button {
+  flex: 1 !important;
+  padding: 6px 12px !important;
+  background: var(--bm-bg-secondary) !important;
+  color: var(--bm-text-secondary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-sm) !important;
+  font-weight: 500 !important;
+  border: 1px solid var(--bm-border) !important;
+  border-radius: var(--bm-radius-xs) !important;
+  cursor: pointer !important;
+  transition: background-color var(--bm-transition-fast),
+              color var(--bm-transition-fast),
+              border-color var(--bm-transition-fast) !important;
+}
+
+.sidebar-actions button:hover {
+  background: var(--bm-bg-hover) !important;
+  color: var(--bm-text-primary) !important;
+  border-color: var(--bm-border-light) !important;
+}
+
+/* --- Sidebar Content Area --- */
+.sidebar-content {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding: var(--bm-space-md) 0 !important;
+}
+
+/* Custom scrollbar for sidebar */
+.sidebar-content::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--bm-bg-active) !important;
+  border-radius: 3px !important;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: var(--bm-border-light) !important;
+}
+
+/* --- Sidebar States --- */
+.sidebar-loading,
+.sidebar-empty {
+  padding: var(--bm-space-2xl) var(--bm-space-xl) !important;
+  color: var(--bm-text-muted) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  text-align: center !important;
+  line-height: 1.6 !important;
+}
+
+.sidebar-no-results {
+  padding: var(--bm-space-xl) !important;
+  color: var(--bm-text-muted) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-sm) !important;
+  text-align: center !important;
+}
+
+/* --- Conversation Groups --- */
+.conversation-group {
+  margin-bottom: var(--bm-space-xs) !important;
+}
+
+.group-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: var(--bm-space-sm) var(--bm-space-xl) !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  transition: background-color var(--bm-transition-fast) !important;
+}
+
+.group-header:hover {
+  background: var(--bm-bg-hover) !important;
+}
+
+.group-title {
+  color: var(--bm-text-secondary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-sm) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  flex: 1 !important;
+}
+
+.group-count {
+  color: var(--bm-text-muted) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-xs) !important;
+  margin-left: var(--bm-space-sm) !important;
+  flex-shrink: 0 !important;
+}
+
+.group-toggle {
+  display: inline-block !important;
+  color: var(--bm-text-muted) !important;
+  font-size: var(--bm-font-sm) !important;
+  margin-left: var(--bm-space-sm) !important;
+  transition: transform var(--bm-transition) !important;
+  flex-shrink: 0 !important;
+}
+
+.group-toggle.collapsed {
+  transform: rotate(-90deg) !important;
+}
+
+.group-items {
+  overflow: hidden !important;
+  max-height: 5000px !important;
+  opacity: 1 !important;
+  transition: max-height var(--bm-transition-slow) ease-in-out,
+              opacity var(--bm-transition-slow) ease-in-out !important;
+}
+
+.group-items.collapsed {
+  max-height: 0 !important;
+  opacity: 0 !important;
+}
+
+/* --- Bookmark Items --- */
+.bookmark-item {
+  padding: var(--bm-space-md) var(--bm-space-xl) !important;
+  cursor: pointer !important;
+  transition: background-color var(--bm-transition-fast) !important;
+  border-bottom: 1px solid rgba(68, 68, 68, 0.3) !important;
+}
+
+.bookmark-item:hover {
+  background: var(--bm-bg-hover) !important;
+}
+
+.bookmark-item:active {
+  background: var(--bm-bg-active) !important;
+}
+
+.bookmark-item-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: var(--bm-space-sm) !important;
+  margin-bottom: var(--bm-space-xs) !important;
+}
+
+.bookmark-name {
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  font-weight: 600 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  flex: 1 !important;
+}
+
+.bookmark-item-actions {
+  display: flex !important;
+  gap: 2px !important;
+  opacity: 0 !important;
+  transition: opacity var(--bm-transition-fast) !important;
+  flex-shrink: 0 !important;
+}
+
+.bookmark-item:hover .bookmark-item-actions,
+.bookmark-item:focus-within .bookmark-item-actions {
+  opacity: 1 !important;
+}
+
+.bookmark-edit-btn,
+.bookmark-delete-btn {
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--bm-text-muted) !important;
+  font-size: var(--bm-font-sm) !important;
+  cursor: pointer !important;
+  border-radius: var(--bm-radius-xs) !important;
+  transition: background-color var(--bm-transition-fast),
+              color var(--bm-transition-fast) !important;
+}
+
+.bookmark-edit-btn:hover {
+  background: var(--bm-bg-active) !important;
+  color: var(--bm-text-primary) !important;
+}
+
+.bookmark-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: var(--bm-danger) !important;
+}
+
+/* Inline edit mode */
+.bookmark-name-edit {
+  width: 100% !important;
+  padding: 4px 8px !important;
+  background: var(--bm-bg-secondary) !important;
+  color: var(--bm-text-primary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-md) !important;
+  font-weight: 600 !important;
+  border: 1px solid var(--bm-accent) !important;
+  border-radius: var(--bm-radius-xs) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.bookmark-preview {
+  color: var(--bm-text-secondary) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-sm) !important;
+  line-height: 1.4 !important;
+  margin-bottom: var(--bm-space-xs) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  word-break: break-word !important;
+}
+
+.bookmark-date {
+  color: var(--bm-text-muted) !important;
+  font-family: var(--bm-font) !important;
+  font-size: var(--bm-font-xs) !important;
+}
+
+/* Search result highlight */
+.bookmark-search-match {
+  background: rgba(16, 163, 127, 0.2) !important;
+  color: var(--bm-accent) !important;
+  border-radius: 2px !important;
+  padding: 0 1px !important;
+}
+
+
+/* =============================================================
+   9. ANIMATIONS (@keyframes)
+   ============================================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes highlightGlow {
+  0% {
+    box-shadow: 0 0 8px rgba(255, 235, 59, 0.4), 0 0 2px rgba(255, 200, 0, 0.3);
+    background: rgba(255, 235, 59, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 18px rgba(255, 235, 59, 0.85), 0 0 6px rgba(255, 200, 0, 0.6);
+    background: rgba(255, 235, 59, 0.55);
+  }
+}
+
+@keyframes highlightPulse {
+  0% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.4;
+  }
+  60% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* =============================================================
+   10. RESPONSIVE
+   ============================================================= */
+@media (max-width: 767px) {
+  #chatgpt-bookmark-sidebar {
+    width: 300px !important;
+  }
+}
+
+@media (max-width: 399px) {
+  #chatgpt-bookmark-sidebar {
+    width: 100vw !important;
+    border-left: none !important;
+  }
+}
